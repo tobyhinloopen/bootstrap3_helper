@@ -1,22 +1,24 @@
 defmodule Bootstrap3Helper.Alert do
   import Phoenix.HTML.Tag, only: [content_tag: 3]
+  import Bootstrap3Helper.HtmlOpts, only: [extract: 3, add_class: 2]
+  import Bootstrap3Helper.Helper, only: [add_aliases: 1]
 
-  def alert_success([do: content]), do: alert(:success, content)
-  def alert_success(content), do: alert(:success, content)
+  add_aliases(:alert_success)
+  def alert_success(content, opts), do: alert(content, Keyword.put(opts, :type, :success))
 
-  def alert_info([do: content]), do: alert(:info, content)
-  def alert_info(content), do: alert(:info, content)
+  add_aliases(:alert_info)
+  def alert_info(content, opts), do: alert(content, Keyword.put(opts, :type, :info))
 
-  def alert_warning([do: content]), do: alert(:warning, content)
-  def alert_warning(content), do: alert(:warning, content)
+  add_aliases(:alert_warning)
+  def alert_warning(content, opts), do: alert(content, Keyword.put(opts, :type, :warning))
 
-  def alert_danger([do: content]), do: alert(:danger, content)
-  def alert_danger(content), do: alert(:danger, content)
+  add_aliases(:alert_danger)
+  def alert_danger(content, opts), do: alert(content, Keyword.put(opts, :type, :danger))
 
-  def alert(_type, ""), do: ""
-  def alert(_type, nil), do: ""
-  def alert(type, [do: content]), do: alert(type, content)
-  def alert(type, content) do
-    content_tag :p, content, class: "alert alert-#{type}"
+  add_aliases(:alert)
+  def alert("", _opts), do: ""
+  def alert(nil, _opts), do: ""
+  def alert(content, opts) do
+    content_tag :p, content, extract(opts, :type, &add_class(&1, "alert alert-#{&2}"))
   end
 end

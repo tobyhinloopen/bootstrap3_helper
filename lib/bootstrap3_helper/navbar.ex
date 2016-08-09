@@ -1,55 +1,48 @@
 defmodule Bootstrap3Helper.Navbar do
   import Phoenix.HTML.Tag, only: [content_tag: 3]
   alias Bootstrap3Helper.Grid
+  import Bootstrap3Helper.HtmlOpts, only: [add_class: 2]
+  import Bootstrap3Helper.Helper, only: [add_aliases: 1]
 
   @navbar_collapse_id "navbar-collapse"
 
-  def navbar([do: content]), do: navbar(content)
-  def navbar(content) do
-    content_tag :nav, class: "navbar navbar-default" do
+  add_aliases(:navbar)
+  def navbar(content, opts) do
+    content_tag :nav, add_class(opts, "navbar navbar-default") do
       Grid.container do: content
     end
   end
 
-  def navbar_header([do: content]), do: navbar_header(content)
-  def navbar_header(content), do: navbar_header(content, target_id: @navbar_collapse_id)
-  def navbar_header(opts, [do: content]), do: navbar_header(content, opts)
+  add_aliases(:navbar_header)
   def navbar_header(content, opts) do
-    content_tag :div, class: "navbar-header" do
-      [
-        navbar_toggle(target_id: opts[:target_id]),
-        content
-      ]
+    { navbar_toggle_opts, navbar_header_opts } = Keyword.split(opts, [:data_target])
+    content_tag :div, add_class(navbar_header_opts, "navbar-header") do
+      [ navbar_toggle(navbar_toggle_opts), content ]
     end
   end
 
-  def navbar_collapse([do: content]), do: navbar_collapse(content)
-  def navbar_collapse(content), do: navbar_collapse(content, id: @navbar_collapse_id)
-  def navbar_collapse(opts, [do: content]), do: navbar_collapse(content, opts)
+  add_aliases(:navbar_collapse)
   def navbar_collapse(content, opts) do
-    content_tag :div, content, class: "collapse navbar-collapse", id: opts[:id]
+    opts = opts
+      |> Keyword.put_new(:id, @navbar_collapse_id)
+      |> add_class("collapse navbar-collapse")
+    content_tag :div, content, opts
   end
 
-  def navbar_nav([do: content]), do: navbar_nav(content)
-  def navbar_nav(content) do
-    content_tag :ul, content, class: "nav navbar-nav"
-  end
-  def navbar_nav([class: classname], [do: content]), do: navbar_nav(content, class: classname)
-  def navbar_nav(content, [class: classname]) do
-    content_tag :ul, content, class: "nav navbar-nav #{classname}"
+  add_aliases(:navbar_nav)
+  def navbar_nav(content, opts) do
+    content_tag :ul, content, add_class(opts, "nav navbar-nav")
   end
 
-  def navbar_nav_right([do: content]), do: navbar_nav_right(content)
-  def navbar_nav_right(content), do: navbar_nav(content, class: "navbar-right")
+  add_aliases(:navbar_nav_right)
+  def navbar_nav_right(content, opts), do: navbar_nav(content, add_class(opts, "navbar-right"))
 
-  def navbar_toggle(opts) do
-    content_tag :button, [
-      class: "navbar-toggle collapsed",
-      type: "button",
-      aria_expanded: "false",
-      data_target: "##{opts[:target_id]}",
-      data_toggle: "collapse"
-    ], do: [
+  def navbar_toggle(opts \\ []) do
+    opts =
+      [ type: "button", aria_expanded: "false", data_target: "##{@navbar_collapse_id}", data_toggle: "collapse" ]
+      |> Keyword.merge(opts)
+      |> add_class("navbar-toggle collapsed")
+    content_tag :button, opts, do: [
       content_tag(:span, "Toggle navigation", class: "sr-only"),
       content_tag(:span, "", class: "icon-bar"),
       content_tag(:span, "", class: "icon-bar"),
