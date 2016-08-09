@@ -1,5 +1,6 @@
 defmodule Bootstrap3Helper.Grid do
   import Phoenix.HTML.Tag, only: [content_tag: 3]
+  import Bootstrap3Helper.HtmlOpts, only: [add_classnames: 2, extract: 3]
 
   def container([do: content]), do: container(content)
   def container(content) do
@@ -13,10 +14,13 @@ defmodule Bootstrap3Helper.Grid do
 
   def col(opts, [do: content]), do: col(content, opts)
   def col(content, opts) do
-    classnames = [
-      ([:xs, :sm, :md, :lg] |> Enum.map(fn k -> Keyword.has_key?(opts, k) && " col-#{k}-#{opts[k]}" || "" end)) |
-      ([:xs_offset, :sm_offset, :md_offset, :lg_offset] |> Enum.map(fn k -> Keyword.has_key?(opts, k) && " col-#{k}-offset-#{opts[k]}" || "" end))
-    ]
-    content_tag :div, content, class: "col" <> Enum.join(classnames, "")
+    opts = add_classnames(opts, ["col"])
+    opts = Enum.reduce([:xs, :sm, :md, :lg], opts,
+      fn (key, opts) ->
+        opts
+        |> extract(key, &add_classnames(&1, ["col-#{key}-#{&2}"]))
+        |> extract(:"#{key}_offset", &add_classnames(&1, ["col-#{key}-offset-#{&2}"]))
+      end)
+    content_tag :div, content, opts
   end
 end
