@@ -1,16 +1,14 @@
 defmodule Bootstrap3Helper.Navbar do
   import Phoenix.HTML.Tag, only: [content_tag: 3]
-  alias Bootstrap3Helper.Grid
   import Bootstrap3Helper.HtmlOpts, only: [add_class: 2]
   import Bootstrap3Helper.Helper, only: [add_aliases: 1]
+  import Bootstrap3Helper.Grid, only: [container: 1]
 
   @navbar_collapse_id "navbar-collapse"
 
   add_aliases(:navbar)
   def navbar(content, opts) do
-    content_tag :nav, add_class(opts, "navbar navbar-default") do
-      Grid.container do: content
-    end
+    content_tag :nav, container(content), add_class(opts, "navbar navbar-default")
   end
 
   add_aliases(:navbar_header)
