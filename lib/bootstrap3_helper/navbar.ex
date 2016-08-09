@@ -5,6 +5,12 @@ defmodule Bootstrap3Helper.Navbar do
   import Bootstrap3Helper.Grid, only: [container: 1]
 
   @navbar_collapse_id "navbar-collapse"
+  @navbar_toggle_opts [
+    type: "button",
+    aria_expanded: "false",
+    data_target: "##{@navbar_collapse_id}",
+    data_toggle: "collapse"
+  ]
 
   add_aliases(:navbar)
   def navbar(content, opts) do
@@ -37,8 +43,7 @@ defmodule Bootstrap3Helper.Navbar do
 
   def navbar_toggle(opts \\ []) do
     opts =
-      [ type: "button", aria_expanded: "false", data_target: "##{@navbar_collapse_id}", data_toggle: "collapse" ]
-      |> Keyword.merge(opts)
+      Keyword.merge(@navbar_toggle_opts, opts)
       |> add_class("navbar-toggle collapsed")
     content_tag :button, opts, do: [
       content_tag(:span, "Toggle navigation", class: "sr-only"),
