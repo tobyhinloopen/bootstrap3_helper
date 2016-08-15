@@ -1,4 +1,4 @@
-defmodule Bootstrap3Helper.Components.GridTest do
+defmodule Bootstrap3Helper.GridTest do
   use ExUnit.Case, async: true
   alias Bootstrap3Helper.Grid
   import Phoenix.HTML, only: [safe_to_string: 1]

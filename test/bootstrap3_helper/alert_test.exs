@@ -1,4 +1,4 @@
-defmodule Bootstrap3Helper.Components.AlertTest do
+defmodule Bootstrap3Helper.AlertTest do
   use ExUnit.Case, async: true
   alias Bootstrap3Helper.Alert
   import Phoenix.HTML, only: [safe_to_string: 1]

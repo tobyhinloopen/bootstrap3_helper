@@ -1,4 +1,4 @@
-defmodule Bootstrap3Helper.Components.NavbarTest do
+defmodule Bootstrap3Helper.NavbarTest do
   use ExUnit.Case, async: true
   alias Bootstrap3Helper.Navbar
   import Phoenix.HTML, only: [safe_to_string: 1]
