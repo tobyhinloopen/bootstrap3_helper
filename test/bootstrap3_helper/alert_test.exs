@@ -1,7 +1,7 @@
 defmodule Bootstrap3Helper.AlertTest do
   use ExUnit.Case, async: true
   alias Bootstrap3Helper.Alert
-  import Phoenix.HTML, only: [safe_to_string: 1]
+  import Bootstrap3Helper.HtmlParser
 
   test "alert_info creates a P.alert.alert-info" do
     assert Alert.alert_info("Foo") == Alert.alert("Foo", type: :info)
@@ -20,6 +20,8 @@ defmodule Bootstrap3Helper.AlertTest do
   end
 
   test "alert creates a P.alert.alert-foo with content" do
-    assert safe_to_string(Alert.alert "Foo", type: "foo") == "<p class=\"alert alert-foo\">Foo</p>"
+    Alert.alert("Foo", type: "foo")
+    |> assert_find("p.alert.alert-foo")
+    |> assert_text("Foo")
   end
 end
