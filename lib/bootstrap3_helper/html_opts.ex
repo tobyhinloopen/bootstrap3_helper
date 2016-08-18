@@ -27,4 +27,12 @@ defmodule Bootstrap3Helper.HtmlOpts do
       opts
     end
   end
+
+  def extract_grid_opts(opts) do
+    Enum.reduce([:xs, :sm, :md, :lg], opts, fn (key, opts) ->
+      opts
+      |> extract(key, &add_class(&1, "col-#{key}-#{&2}"))
+      |> extract(:"#{key}_offset", &add_class(&1, "col-#{key}-offset-#{&2}"))
+    end)
+  end
 end

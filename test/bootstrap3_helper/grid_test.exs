@@ -20,6 +20,6 @@ defmodule Bootstrap3Helper.GridTest do
 
   test "col creates DIV.col" do
     Grid.col("Foo", sm: 4, md_offset: 4)
-    |> assert_find(".col.col-sm-4.col-md-offset-4", "Foo")
+    |> assert_find(".col-sm-4.col-md-offset-4", "Foo")
   end
 end
